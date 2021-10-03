@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Link } from "react-router-dom";
 import * as Yup from 'yup';
-import { createCard, updateCardById } from "../../services/pokemon.services";
+import { createCard } from "../../services/pokemon.services";
 import MOCK_CATEGORY from '../../datas/category.mock';
 
 function CardForm({
@@ -13,6 +13,7 @@ function CardForm({
   image,
   name,
   description,
+  onUpdate
 }) {
   const [card, setCard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,19 +33,7 @@ function CardForm({
     setIsLoading(false);
   }
 
-  const handleUpdate = async(values, callback) => {
-    setError(false);
-    setIsLoading(true);
-    try {
-      const result = await updateCardById(id, values);
-      setCard(result.data);
-      // le callback fait reference au resetForm de formik
-      callback({ values: '' });
-    } catch (err) {
-      setError(true);
-    }
-    setIsLoading(false);
-  }
+  
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +52,7 @@ function CardForm({
     }),
     onSubmit: (values, { resetForm }) => {
       if (action === 'update') {
-        handleUpdate(values, resetForm);
+        onUpdate(values, resetForm);
       } else {
         handleCreate(values, resetForm);
       }

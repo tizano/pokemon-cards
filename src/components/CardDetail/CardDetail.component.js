@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CardForm from "../CardForm/CardForm.component";
-import { getCardById } from "../../services/pokemon.services";
+import { getCardById, updateCardById } from "../../services/pokemon.services";
 import './CardDetail.component.scss';
 
 function CardDetail() {
@@ -24,6 +24,20 @@ function CardDetail() {
     };
     fetchCard();
   }, [id]);
+
+  const handleUpdate = async(values, callback) => {
+    setError(false);
+    setIsLoading(true);
+    try {
+      const result = await updateCardById(id, values);
+      setCard(result.data);
+      // le callback fait reference au resetForm de formik
+      callback({ values: '' });
+    } catch (err) {
+      setError(true);
+    }
+    setIsLoading(false);
+  }
 
   return (
     <div>
@@ -51,6 +65,7 @@ function CardDetail() {
             description={card.description}
             label="Modifier"
             action="update"
+            onUpdate={handleUpdate}
           />
         </>
       )}
