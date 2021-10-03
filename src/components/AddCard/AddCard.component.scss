@@ -1,0 +1,23 @@
+.card__add {
+  display: flex;
+  &--plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    height: 100%;
+    width: 100%;
+    border: 4px dotted #cecece;
+    font-size: 4rem;
+    font-weight: 700;
+    transition: opacity 0.25s ease-in-out;
+  }
+  &:after {
+    display: none;
+  }
+  &:hover {
+    .card__add--plus {
+      opacity: 0.8;
+    }
+  }
+}

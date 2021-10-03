@@ -1,0 +1,12 @@
+.filters {
+  display: flex;
+  justify-content: center;
+
+  &__group {
+    display: flex;
+    align-items: center;
+    &:not(:last-of-type) {
+      margin-right: 1rem;
+    }
+  }
+}
