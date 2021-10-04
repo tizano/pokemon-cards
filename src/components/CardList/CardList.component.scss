@@ -1,6 +1,12 @@
 .cards {
   display: flex;
-  flex-wrap: wrap;
-  max-width: 1440px;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
+  max-width: 1440px;
+  @media screen and (min-width: 576px) {
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex-basis: 50%;
+  }
 }
