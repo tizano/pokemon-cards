@@ -6,7 +6,9 @@ function Add() {
   return (
     <section>
       <Header title="Ajout d'une carte Pokemon" />
-      <CardForm action="add" label="Ajouter" />
+      <div className="container">
+        <CardForm action="add" label="Ajouter" />
+      </div>
     </section>
   )
 }

@@ -7,6 +7,7 @@ import './CardDetail.component.scss';
 function CardDetail() {
   const [card, setCard] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
   const [error, setError] = useState(false);
   const { id } = useParams();
 
@@ -25,14 +26,13 @@ function CardDetail() {
     fetchCard();
   }, [id]);
 
-  const handleUpdate = async(values, callback) => {
+  const handleUpdate = async(values) => {
     setError(false);
     setIsLoading(true);
     try {
       const result = await updateCardById(id, values);
       setCard(result.data);
-      // le callback fait reference au resetForm de formik
-      callback({ values: '' });
+      setIsUpdated(true);
     } catch (err) {
       setError(true);
     }
@@ -40,14 +40,14 @@ function CardDetail() {
   }
 
   return (
-    <div>
+    <>
       {error && <div>Une erreur est survenue</div>}
       {isLoading ? (
         <div>Loading ...</div>
       ) : (
-        <>
+        <div className="container--double">
           <div className="card__detail">
-            <Link to="/">Retour à la liste des cartes</Link>
+            <Link to="/" className="nav__back">Retour à la liste des cartes</Link>
             <div className="card__detail__content">
               <h2>{card.name}</h2>
               <p>Categorie : {card.category}</p>
@@ -58,18 +58,18 @@ function CardDetail() {
             </figure>
           </div>
           <CardForm
-            id={id}
             category={card.category}
             image={card.image}
             name={card.name}
             description={card.description}
             label="Modifier"
             action="update"
+            updated={isUpdated}
             onUpdate={handleUpdate}
           />
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 

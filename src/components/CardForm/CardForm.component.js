@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useFormik } from 'formik';
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { createCard } from "../../services/pokemon.services";
 import MOCK_CATEGORY from '../../datas/category.mock';
+import './CardForm.component.scss';
 
 function CardForm({
   action,
   label,
-  id,
   category,
   image,
   name,
   description,
+  updated,
   onUpdate
 }) {
   const [card, setCard] = useState(null);
@@ -33,8 +35,6 @@ function CardForm({
     setIsLoading(false);
   }
 
-  
-
   const formik = useFormik({
     initialValues: {
       name: name || '',
@@ -52,15 +52,16 @@ function CardForm({
     }),
     onSubmit: (values, { resetForm }) => {
       if (action === 'update') {
-        onUpdate(values, resetForm);
+        onUpdate(values);
       } else {
         handleCreate(values, resetForm);
       }
     },
   });
-  return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
+
+  const displayForm = () => (
+    <form onSubmit={formik.handleSubmit} className="form">
+      <div className="form__group">
         <label htmlFor="name">Nom de la carte</label>
         <input
           id="name"
@@ -73,7 +74,8 @@ function CardForm({
         {formik.touched.name && formik.errors.name ? (
           <div className="error">{formik.errors.name}</div>
         ) : null}
-
+      </div>
+      <div className="form__group">
         <label htmlFor="category">Catégorie</label>
         <select
           name="category"
@@ -88,7 +90,8 @@ function CardForm({
         {formik.touched.category && formik.errors.category ? (
           <div className="error">{formik.errors.category}</div>
         ) : null}
-
+      </div>
+      <div className="form__group">
         <label htmlFor="image">Lien de l'image</label>
         <input
           id="image"
@@ -101,7 +104,8 @@ function CardForm({
         {formik.touched.image && formik.errors.image ? (
           <div className="error">{formik.errors.image}</div>
         ) : null}
-
+      </div>
+      <div className="form__group">
         <label htmlFor="description">Description</label>
         <textarea
           id="description"
@@ -114,23 +118,48 @@ function CardForm({
         {formik.touched.description && formik.errors.description ? (
           <div className="error">{formik.errors.description}</div>
         ) : null}
+      </div>
 
-        <button type="submit">{label}</button>
-        <Link to="/">Annuler</Link>
-      </form>
-      {error && <div>Une erreur est survenue</div>}
-      {isLoading && card === null && (
+      <div className="button__wrapper">
+        <button type="submit" className="btn">{label}</button>
+        <Link to="/" className="btn btn--ghost">Annuler</Link>
+      </div>
+    </form>
+  );
+
+  return (
+    <div className="card__form">
+      {displayForm()}
+      {error && <div className="alert alert--error">Une erreur est survenue</div>}
+      {isLoading && (
         <div>Loading ...</div>
       )}
+      {/* Message pour la création d'une carte */}
       {!isLoading && card !== null && (
-        <div>
-          <span>Carte {card.name} {action === 'update' ? 'modifiée' : 'ajoutée'}</span>
+        <div className="alert alert--success">
+          <span>Carte {card.name} ajoutée</span>
+          <Link to="/">Retour à la liste des cartes</Link>
+        </div>
+      )}
+      {/* Message pour la mise à jour d'une carte */}
+      {updated && (
+        <div className="alert alert--success">
+          <span>Carte {name} modifiée</span>
           <Link to="/">Retour à la liste des cartes</Link>
         </div>
       )}
     </div>
-    
   );
+};
+
+CardForm.propTypes = {
+  action: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  category: PropTypes.string,
+  image: PropTypes.string,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  onUpdate: PropTypes.func,
 };
 
 export default CardForm;

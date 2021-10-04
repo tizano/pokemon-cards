@@ -4,14 +4,12 @@ import './Card.component.scss';
 
 function Card({
   _id,
+  name,
   category,
   image,
-  name,
-  onDelete,
-  onViewDetail
+  onViewDetail,
+  onDelete
 }) {
-
-
   const handleDeleteCard = () => {
     onDelete(_id);
   }
@@ -32,13 +30,12 @@ function Card({
 }
 
 Card.propTypes = {
+  _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
+  image: PropTypes.string,
   onViewDetail: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  image: PropTypes.string,
-  createdAt: PropTypes.string,
-  updatedAt: PropTypes.string
 };
 
 export default memo(Card);

@@ -3,9 +3,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  img {
-    max-width: 200px;
+  a {
     display: block;
+    img {
+      width: 200px;
+      display: block;
+    }
   }
   h1 {
     background-color: #1d1d1d;

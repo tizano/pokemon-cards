@@ -14,7 +14,6 @@ function CardList() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [categories, setCategories] = useState([]);
-
   const history = useHistory();
 
   const fetchCards = async () => {
@@ -79,6 +78,10 @@ function CardList() {
     history.push(`/card/${id}`);
   }
 
+  const handleClickAdd = () => {
+    history.push('/card/add');
+  }
+
   const displayCards = () => (cardsFiltered.map((card) => (
     <Card
       {...card}
@@ -98,7 +101,7 @@ function CardList() {
           <Filters categoriesChecked={categories} onFilter={handleFilter} />
           <div className='cards'>
             {displayCards()}
-            <AddCard />
+            <AddCard onClickAdd={handleClickAdd} />
           </div>
         </>
       )}
